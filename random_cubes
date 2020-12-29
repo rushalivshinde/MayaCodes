@@ -1,0 +1,45 @@
+import maya.cmds as cmds
+import random
+
+'''      
+cubelist = cmds.ls ('myCube*')
+
+if len ( cubelist ) > 0:
+    cmds.delete( cubelist )
+
+'''   
+result = cmds.polyCube( w=1, h=1, d=1, name='myCube#' )    #creating a cube
+
+instanceGroupName = cmds.group( empty=True, name=transformName + '_instance_grp#' ) #creating a group
+
+#print 'result: ' + str( result )    #printing result
+
+transformName = result[0] 
+
+for i in range( 0,50 ):   #to create 50 instances
+    
+    instanceResult = cmds.instance( transformName, name=transformName + '_instance#' ) #creating an instance
+    
+    cmds.parent( instanceResult, instanceGroupName )   #adding instances in a group
+
+    #print 'instanceResult: ' + str( instanceResult )
+    
+    x = random.uniform( -10, 10 )
+    y = random.uniform( 0, 20 )           #Move randomly
+    z = random.uniform( -10, 10 )
+    
+    cmds.move ( x, y, z, instanceResult )
+    
+    xRot = random.uniform( 0, 360 )
+    yRot = random.uniform( 0, 360 )         #Rotate randomly 
+    zRot = random.uniform( 0, 360 )
+    
+    cmds.rotate( xRot, yRot, zRot, instanceResult )
+    
+    scalingFactor = random.uniform( 0.3, 1.5 )         #scale randomly
+    
+    cmds.scale( scalingFactor, scalingFactor, scalingFactor, instanceResult )
+    
+cmds.hide( transformName )
+
+cmds.xform( instanceGroupName, centerPivots=True )       
